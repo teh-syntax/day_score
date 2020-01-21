@@ -1,0 +1,7 @@
+env
+*.pyc
+*.log
+static/app/node_modules
+*.retry
+.vagrant/
+./scripts/file_watcher/last_modified.json

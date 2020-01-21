@@ -1,0 +1,15 @@
+appName: day_score
+appGroup: vagrant
+appUser: vagrant
+appPass: 12N6yL.0Q0AUQ # created with: python -c 'import crypt; print crypt.crypt("Temp1234", "1234")'
+appRootPath: "{{ webappsPath }}/day_score"
+appDBHost: localhost
+appDBName: day_scoredb
+webappsPath: /webapps
+groupAccessPath: "{{ webappsPath }}/run"
+pipVirtualenvPath: "{{ appRootPath }}/env"
+nginxConfPath: /etc/nginx/sites-enabled
+nginxUserGroup: www-data
+uwsgiDir: /etc/uwsgi
+uwsgiVassalsDir: "{{ uwsgiDir }}/vassals"
+uwsgiLogDir: /var/log/uwsgi

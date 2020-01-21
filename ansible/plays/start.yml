@@ -1,0 +1,12 @@
+---
+- name: start-playbook
+  hosts: "{{ target }}"
+  user: vagrant
+  become: yes
+  become_method: sudo
+
+  roles:
+    - server_setup
+    - nginx
+    - postgres
+    - application

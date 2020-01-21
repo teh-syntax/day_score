@@ -1,0 +1,7 @@
+- name: eat a dick
+  command: echo "eat a dick"
+
+- name: Deploy database settings
+  template: src=local_settings.py dest={{appRootPath}}/{{appName}}
+  tags:
+    - sync
