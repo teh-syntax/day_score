@@ -1,0 +1,10 @@
+{
+"apps": [
+    {
+      "name": "day_score-vue",
+      "cwd": "/webapps/day_score/static/app",
+      "script": "npm",
+      "args" : "run serve"
+    }
+  ]
+}
