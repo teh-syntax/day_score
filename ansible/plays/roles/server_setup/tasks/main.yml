@@ -29,18 +29,41 @@
 - name: Install libpg-dev
   apt: pkg=libpq-dev state=present update_cache=true
 
-- name: Install Python pip  psycopg2
-  apt: pkg={{ item }} state=present update_cache=yes
-  with_items:
-    - python-psycopg2 # Required for Ansible to interact with postgres
-    - python3-pip
-    - nodejs
+- name: add repository and install its signing key
+  shell: curl -sL https://deb.nodesource.com/setup_10.x | bash -
+  args:
+    creates: /etc/apt/sources.list.d/nodesource.list
 
+- name: Install Python pip psycopg2
+  apt: 
+    pkg:
+      - python3-psycopg2
+      - python3-pip 
+    state: present
+    update_cache: yes
+
+- name: Install node npm
+  apt: 
+    pkg:
+      - nodejs 
+    state: present
+    update_cache: yes
+ 
 - name: Install virtualenv package
   command: pip3 install virtualenv
 
 - name: Install uwsgi package
   command: pip3 install uwsgi
+
+- name: Install vue-cli package globally.
+  npm:
+    name: '@vue/cli'
+    global: yes
+
+- name: Install pm2 package globally.
+  npm:
+    name: pm2
+    global: yes
 
 - name: Setup Uwsgi service
   template: src=emperor.uwsgi.service dest=/etc/systemd/system/

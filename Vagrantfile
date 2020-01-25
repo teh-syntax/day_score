@@ -34,4 +34,11 @@ Vagrant.configure("2") do |config|
         ansible.inventory_path = "ansible/hosts"
         ansible.limit = "local"
     end
+    config.vm.provision "ansible_local", run: "always" do |ansible|
+        ansible.playbook = "/webapps/day_score/ansible/plays/start.yml"
+        ansible.extra_vars = {"target" => "127.0.0.1",}
+        ansible.inventory_path = "ansible/hosts"
+        ansible.limit = "local"
+        ansible.tags = "start"
+    end
 end

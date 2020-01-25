@@ -1,9 +1,11 @@
 ---
 - name: Install postgres and psycopg2
-  apt: pkg={{ item }} state=present update_cache=yes
-  with_items:
-    - python-psycopg2 # Required for Ansible to interact with postgres
-    - postgresql
+  apt: 
+    pkg:
+      - python3-psycopg2
+      - postgresql
+    state: present 
+    update_cache: yes
 
 - name: Install libpg-dev
   apt: pkg=libpq-dev state=present update_cache=true

@@ -1,7 +1,52 @@
-- name: eat a dick
-  command: echo "eat a dick"
-
 - name: Deploy database settings
   template: src=local_settings.py dest={{appRootPath}}/{{appName}}
   tags:
     - sync
+
+- name: Run the Django makemigrations command
+  django_manage:
+    command="makemigrations"
+    app_path={{appRootPath}}
+    virtualenv={{ pipVirtualenvPath }}
+  become: yes
+  become_user: "{{appUser}}"
+  tags:
+    - migrate
+
+- name: Run Django database migrations
+  django_manage:
+    command=migrate
+    app_path={{appRootPath}}
+    virtualenv={{ pipVirtualenvPath }}
+  notify: Restart uwsgi
+  become: yes
+  become_user: "{{appUser}}"
+  tags:
+    - migrate
+
+- name: create crontab
+  cron:
+    name: "file watcher"
+    job: "/bin/bash /webapps/day_score/file_watch.sh"
+
+- name: start pm2
+  command: pm2 start /webapps/day_score/static/app/day_score_pm2.json
+  become: yes
+  become_user: "{{appUser}}"
+  tags:
+   - start
+
+- name: Restart service postgresql, on VM start
+  service: name=postgresql state=restarted
+  tags:
+    - start
+
+- name: Restart service nginx, on VM start
+  service: name=nginx state=restarted
+  tags:
+    - start
+ 
+- name: Restart service emperor.uwsgi, on VM start
+  service: name=emperor.uwsgi state=restarted
+  tags:
+  - start
